@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Xunit;
 
 namespace assignment.Tests
@@ -11,7 +12,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs2364_ReturnTrue() 
         {
             var expected = true;
-            var actual = IsLeapYear(2364);
+            var actual = Program.IsLeapYear(2364);
             Assert.Equal(expected, actual);
         }
 
@@ -19,7 +20,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs333_ReturnFalse()
         {
             var expected = false;
-            var actual = IsLeapYear(2333);
+            var actual = Program.IsLeapYear(2333);
             Assert.Equal(expected, actual);
         }
 
@@ -27,7 +28,7 @@ namespace assignment.Tests
         public void Divisible_By_2_Not_4_Is_Not_Leap()
         {
             var expected = false;
-            var actual = IsLeapYear(22);
+            var actual = Program.IsLeapYear(22);
             Assert.Equal(expected, actual);
         }
 
@@ -36,7 +37,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs300_ReturnFalse()
         {
            var expected = false;
-            var actual = IsLeapYear(300);
+            var actual = Program.IsLeapYear(300);
             Assert.Equal(expected, actual); 
         }
 
@@ -44,7 +45,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs100_ReturnFalse()
         {
             var expected = false;
-            var actual = IsLeapYear(100);
+            var actual = Program.IsLeapYear(100);
             Assert.Equal(expected, actual); 
         } 
 
@@ -54,7 +55,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs400_ReturnTrue()
         {
            var expected = true;
-            var actual = IsLeapYear(400);
+            var actual = Program.IsLeapYear(400);
             Assert.Equal(expected, actual); 
         }
 
@@ -62,11 +63,40 @@ namespace assignment.Tests
         public void IsLeap_InputIs2400_ReturnTrue()
         {
             var expected = true;
-            var actual = IsLeapYear(2400);
+            var actual = Program.IsLeapYear(2400);
             Assert.Equal(expected, actual); 
-        } 
+        }
 
-        public bool IsLeapYear(int year) 
+        [Fact]
+        public void LeapTrue_Prints_Yay()
+        {
+            var writer = new StringWriter();
+            Console.SetOut(writer);
+
+            var input = new StringReader("24");
+            Console.SetIn(input);
+            Program.Main(new string[] {});
+
+            var actual = writer.GetStringBuilder().ToString();
+            Assert.Equal("Enter Year:\r\nyay\r\n", actual);
+            //Assert.That("yay", Is.EqualTo(string.Format("What's your name?{0}Hello Somebody!!{0}", Environment.NewLine))); 
+        }
+
+        [Fact]
+        public void LeapFalse_Prints_Nay()
+        {
+            var writer = new StringWriter();
+            Console.SetOut(writer);
+
+            var input = new StringReader("333");
+            Console.SetIn(input);
+            Program.Main(new string[] {});
+
+            var actual = writer.GetStringBuilder().ToString();
+            Assert.Equal("Enter Year:\r\nnay\r\n", actual);
+        }
+
+        /*public bool IsLeapYear(int year) 
         {
             if (year % 4 == 0) 
             {
@@ -83,6 +113,6 @@ namespace assignment.Tests
             {
                 return false;
             }
-        }
+        } */
     }
 }
