@@ -28,7 +28,7 @@ namespace assignment.Tests
         public void Divisible_By_2_Not_4_Is_Not_Leap()
         {
             var expected = false;
-            var actual = Program.IsLeapYear(22);
+            var actual = Program.IsLeapYear(2222);
             Assert.Equal(expected, actual);
         }
 
@@ -37,7 +37,7 @@ namespace assignment.Tests
         public void IsLeap_InputIs300_ReturnFalse()
         {
            var expected = false;
-            var actual = Program.IsLeapYear(300);
+            var actual = Program.IsLeapYear(2300);
             Assert.Equal(expected, actual); 
         }
 
@@ -45,19 +45,12 @@ namespace assignment.Tests
         public void IsLeap_InputIs100_ReturnFalse()
         {
             var expected = false;
-            var actual = Program.IsLeapYear(100);
+            var actual = Program.IsLeapYear(2100);
             Assert.Equal(expected, actual); 
         } 
 
         //Chack divisable by 400 is leap
 
-        [Fact]
-        public void IsLeap_InputIs400_ReturnTrue()
-        {
-           var expected = true;
-            var actual = Program.IsLeapYear(400);
-            Assert.Equal(expected, actual); 
-        }
 
         [Fact]
         public void IsLeap_InputIs2400_ReturnTrue()
@@ -73,7 +66,7 @@ namespace assignment.Tests
             var writer = new StringWriter();
             Console.SetOut(writer);
 
-            var input = new StringReader("24");
+            var input = new StringReader("2024");
             Console.SetIn(input);
             Program.Main(new string[] {});
 
@@ -88,7 +81,7 @@ namespace assignment.Tests
             var writer = new StringWriter();
             Console.SetOut(writer);
 
-            var input = new StringReader("333");
+            var input = new StringReader("3333");
             Console.SetIn(input);
             Program.Main(new string[] {});
 
@@ -96,23 +89,31 @@ namespace assignment.Tests
             Assert.Equal("Enter Year:\r\nnay\r\n", actual);
         }
 
-        /*public bool IsLeapYear(int year) 
+        [Fact]
+        public void Below1582_ThrowsException()
         {
-            if (year % 4 == 0) 
-            {
-                if (year % 100 == 0) 
-                {
-                    if(year % 400 == 0) 
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                return true;
-            } else
-            {
-                return false;
-            }
-        } */
+            var ex = Assert.Throws<InvalidOperationException>(() => Program.IsLeapYear(1333));
+            Assert.Equal("The asserted year is below 1582", ex.Message);
+        }
+
+        [Fact]
+        public void InputLetter_ThrowsException()
+        {
+            var input = new StringReader("Totusenogfjorten");
+            Console.SetIn(input);
+            
+            var ex = Assert.Throws<FormatException>(() => Program.Main(new string[] {}));
+            Assert.Equal("Input string was not in a correct format.", ex.Message);
+        }
+
+        [Fact]
+        public void InputDouble_ThrowsException()
+        {
+            var input = new StringReader("2431.423");
+            Console.SetIn(input);
+            
+            var ex = Assert.Throws<FormatException>(() => Program.Main(new string[] {}));
+            Assert.Equal("Input string was not in a correct format.", ex.Message);
+        }
     }
 }
